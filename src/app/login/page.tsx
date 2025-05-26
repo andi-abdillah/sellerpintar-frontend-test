@@ -7,19 +7,23 @@ import { Label } from "@/components/ui/label";
 import { LoginFormInput, UserValidation } from "@/schema/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm<LoginFormInput>({
     resolver: zodResolver(UserValidation.LOGIN),
     defaultValues: {
       username: "",
       password: ""
     }
-  })
+  });
 
   const onSubmit = (data: LoginFormInput) => {
-    console.log(data)
+    console.log(data);
   };
 
   return (
@@ -29,9 +33,7 @@ const LoginPage = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username">
-                Username
-              </Label>
+              <Label htmlFor="username">Username</Label>
               <FormField
                 name="username"
                 render={({ field }) => (
@@ -50,24 +52,35 @@ const LoginPage = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">
-                Password
-              </Label>
+              <Label htmlFor="password">Password</Label>
               <FormField
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        id="password"
-                        placeholder="Input password"
-                        {...field}
-                      />
-                    </FormControl>
+                  <>
+                    <FormItem className="relative">
+                      <FormControl>
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Input password"
+                          {...field}
+                          className="pr-10"
+                        />
+                      </FormControl>
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                      </button>
+                    </FormItem>
                     <FormMessage />
-                  </FormItem>
+                  </>
                 )}
               />
+
             </div>
             <Button type="submit" className="mt-2 w-full">
               Login
@@ -82,7 +95,7 @@ const LoginPage = () => {
         </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
