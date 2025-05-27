@@ -1,7 +1,7 @@
 import ArticleList from "./components/articles-list"
 import Hero from "./components/hero"
 
-const UserArticles = () => {
+const Home = () => {
   return (
     <>
       <Hero />
@@ -10,4 +10,4 @@ const UserArticles = () => {
   )
 }
 
-export default UserArticles
+export default Home

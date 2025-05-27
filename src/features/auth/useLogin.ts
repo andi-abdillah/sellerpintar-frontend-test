@@ -1,25 +1,24 @@
-import { useMutation } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/axios";
-import { LoginFormInput } from "@/schema/user.schema";
-import Cookies from "js-cookie";
+import { useMutation } from "@tanstack/react-query"
+import { axiosInstance } from "@/lib/axios"
+import { LoginFormInput } from "@/schema/user.schema"
+import { useAuth } from "@/provider/auth-context"
 
 interface UseLoginOptions {
-  onSuccess?: () => void;
+  onSuccess?: () => void
 }
 
 export const useLogin = ({ onSuccess }: UseLoginOptions) => {
+  const { login } = useAuth()
+
   return useMutation({
     mutationFn: async (data: LoginFormInput) => {
-      const response = await axiosInstance.post("auth/login", data);
-      const { token } = response.data;
-      return token;
+      const response = await axiosInstance.post("auth/login", data)
+      const { token } = response.data
+      return token
     },
     onSuccess: (token) => {
-      Cookies.set("token", token, {
-        sameSite: "strict",
-        expires: 7,
-      });
-      onSuccess?.();
+      login(token)
+      onSuccess?.()
     },
-  });
-};
+  })
+}
