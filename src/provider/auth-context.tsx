@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/user.type";
 import { axiosInstance } from "@/lib/axios";
+import { toast } from "sonner";
+import { toastStyle } from "@/lib/toast";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -64,6 +66,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove("token");
     Cookies.remove("user_role");
     setUser(null);
+    toast("Logout sukses", {
+      description: "Sesi Anda sudah berakhir.",
+      style: toastStyle.success,
+    });
     router.replace("/login");
   };
 
