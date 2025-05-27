@@ -16,7 +16,7 @@ export function middleware(req: NextRequest) {
 
   if (token && isPublic) {
     if (role === "User") {
-      return NextResponse.redirect(new URL("/user/articles", req.url));
+      return NextResponse.redirect(new URL("/user/home", req.url));
     }
 
     if (role === "Admin") {

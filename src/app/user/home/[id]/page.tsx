@@ -15,8 +15,6 @@ const ArticleDetailPage = () => {
 
   const { data: relatedArticles = [] } = useGetRelatedArticles(article?.categoryId, article?.id)
 
-  console.log(relatedArticles);
-
   return (
     <div className="py-24 max-w-7xl mx-auto">
       <div className="py-10 px-5 md:px-40 flex items-center flex-col space-y-4">

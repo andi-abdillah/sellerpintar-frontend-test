@@ -28,7 +28,7 @@ const LoginPage = () => {
   const { mutate } = useLogin({
     onSuccess: () => {
       form.reset();
-      router.push("/user/articles");
+      router.push("/user/home");
     },
   })
 

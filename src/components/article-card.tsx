@@ -12,7 +12,7 @@ export const ArticleCard = ({ article }: Props) => {
    return (
       <div className="w-80 h-full space-y-4">
          <div className="h-52 overflow-hidden rounded-xl">
-            <Link href={`/user/articles/${article.id}`}>
+            <Link href={`/user/home/${article.id}`}>
                {article.imageUrl ? (
                   <Image
                      src={article.imageUrl}
