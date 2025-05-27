@@ -1,4 +1,4 @@
-import ArticleList from "./components/articles"
+import ArticleList from "./components/articles-list"
 import Hero from "./components/hero"
 
 const UserArticles = () => {
