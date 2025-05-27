@@ -11,8 +11,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { useLogin } from "@/features/auth/useLogin";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginFormInput>({
@@ -26,6 +28,7 @@ const LoginPage = () => {
   const { mutate } = useLogin({
     onSuccess: () => {
       form.reset();
+      router.push("/user/articles");
     },
   })
 
