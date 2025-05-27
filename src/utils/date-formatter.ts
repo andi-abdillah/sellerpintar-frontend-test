@@ -1,4 +1,6 @@
-export function dateFormatter(dateString: string): string {
+export function dateFormatter(dateString: string) {
+  if (!dateString) return null
+
   const date = new Date(dateString)
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",

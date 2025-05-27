@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useGetAllArticles } from "@/features/articles/useGetAllArticles";
+import { useGetAllArticles } from "@/features/article/useGetAllArticles";
 import { Article } from "@/types/article.type";
-import { dateFormatter } from "@/utils/date-formatter";
-import { limitWords } from "@/utils/limit-words";
-import Image from "next/image";
 import { ArticlePagination } from "./article-pagination";
+import { ArticleCard } from "@/components/article-card";
 
 const ArticleList = () => {
   const router = useRouter();
@@ -29,34 +27,9 @@ const ArticleList = () => {
         Showing: {limit ?? 0} of {total ?? 0} articles
       </div>
 
-      <div className="mt-6 mb-12 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
+      <div className="mt-6 mb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14 place-items-center">
         {articles?.map((article: Article) => (
-          <div key={article.id} className="w-80 h-full space-y-4">
-            <div className="h-52 overflow-hidden rounded-xl">
-              {article.imageUrl ? (
-                <Image
-                  src={article.imageUrl}
-                  alt={article.title}
-                  width={387}
-                  height={240}
-                  priority
-                  className="object-cover w-full h-full"
-                />
-              ) : (
-                <div className="h-52 bg-gray-200 rounded-md flex items-center justify-center text-gray-500 text-sm">
-                  No Image
-                </div>
-              )}
-            </div>
-            <div className="space-y-2">
-              <h6 className="text-sm text-slate-600">{dateFormatter(article.createdAt)}</h6>
-              <h4 className="text-base font-semibold text-slate-900">{article.title}</h4>
-              <p
-                className="text-sm text-slate-600"
-                dangerouslySetInnerHTML={{ __html: limitWords(article.content) }}
-              />
-            </div>
-          </div>
+          <ArticleCard key={article.id} article={article} />
         ))}
       </div>
 

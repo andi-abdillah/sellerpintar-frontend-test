@@ -10,7 +10,6 @@ export const useGetAllArticles = (currentPage: number) => {
       const response = await axiosInstance.get(
         `/articles?sortBy=createdAt&sortOrder=desc&page=${currentPage}&limit=${perPage}`
       )
-
       const { data: articles, limit, page, total } = response.data
       return { articles, limit, page, total }
     },
