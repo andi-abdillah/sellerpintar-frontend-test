@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
+import { useLogin } from "@/features/auth/useLogin";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,8 +23,14 @@ const LoginPage = () => {
     }
   });
 
+  const { mutate } = useLogin({
+    onSuccess: () => {
+      form.reset();
+    },
+  })
+
   const onSubmit = (data: LoginFormInput) => {
-    console.log(data);
+    mutate(data);
   };
 
   return (
