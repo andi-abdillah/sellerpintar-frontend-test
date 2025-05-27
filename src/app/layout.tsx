@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ReactQueryProvider } from "@/provider/react-query-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +17,7 @@ export default function RootLayout({
       <body
         className="antialiased font-archivo"
       >
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );
