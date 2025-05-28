@@ -80,7 +80,7 @@ const Navbar = () => {
       </div>
 
       <Dialog open={isLogoutDialogOpen} onOpenChange={setIsLogoutDialogOpen}>
-        <DialogContent className="sm:max-w-sm">
+        <DialogContent className="sm:max-w-sm [&>button.absolute]:hidden">
           <DialogHeader>
             <DialogTitle>Logout</DialogTitle>
             <DialogDescription>

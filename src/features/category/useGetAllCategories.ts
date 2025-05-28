@@ -5,7 +5,7 @@ export const useGetAllCategories = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await axiosInstance.get(`categories`)
+      const response = await axiosInstance.get(`categories?page=1&limit=1000`)
       const {
         data: categories,
         currentPage,

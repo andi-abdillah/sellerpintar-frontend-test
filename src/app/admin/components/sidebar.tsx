@@ -17,7 +17,7 @@ const Sidebar = () => {
   ]
 
   return (
-    <div className="h-screen p-4 bg-primary">
+    <div className="p-4 bg-primary">
       <h1 className="px-4 py-2 text-white text-xl font-semibold">Logoipsum</h1>
       <ul className="mt-4 w-52 space-y-2">
         {items.map((item) => (
