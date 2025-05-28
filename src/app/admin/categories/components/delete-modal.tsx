@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useDeleteCategory } from "@/features/category/useDeleteCategory"
-import { Category } from "@/types/article.type"
+import { Category } from "@/types/category.type"
 
 interface DeleteModalProps {
   isOpen: boolean

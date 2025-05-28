@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useUpdateCategory } from "@/features/category/useUpdateCategory";
 import { CategoryValidation, UpdateCategory } from "@/schema/category.schema"
-import { Category } from "@/types/article.type";
+import { Category } from "@/types/category.type";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
@@ -57,6 +57,7 @@ const EditModal = ({ isOpen = false, onClose = () => { }, category }: EditModalP
               <div className="space-y-2">
                 <Label htmlFor="name">Category</Label>
                 <FormField
+                  control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>

@@ -45,6 +45,7 @@ const LoginPage = () => {
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
               <FormField
+                control={form.control}
                 name="username"
                 render={({ field }) => (
                   <FormItem>
@@ -64,6 +65,7 @@ const LoginPage = () => {
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <FormField
+                control={form.control}
                 name="password"
                 render={({ field }) => (
                   <>

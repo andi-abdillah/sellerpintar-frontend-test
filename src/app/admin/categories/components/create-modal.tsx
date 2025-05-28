@@ -53,6 +53,7 @@ const CreateModal = ({ isOpen = false, onClose = () => { } }: CreateModalProps) 
               <div className="space-y-2">
                 <Label htmlFor="name">Category</Label>
                 <FormField
+                  control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
