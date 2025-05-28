@@ -3,12 +3,11 @@ import { toastStyle } from "@/lib/toast"
 import { RegisterFormInput } from "@/schema/user.schema"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
+import { AxiosError } from "axios"
 
 interface UseRegisterOptions {
   onSuccess?: () => void
 }
-
-import { AxiosError } from "axios"
 
 export const useRegister = ({ onSuccess }: UseRegisterOptions) => {
   return useMutation({
@@ -23,7 +22,7 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions) => {
       })
       onSuccess?.()
     },
-    onError: (error: unknown) => {
+    onError: (error) => {
       if (error instanceof AxiosError) {
         if (error.response?.status === 400) {
           toast("Register gagal", {

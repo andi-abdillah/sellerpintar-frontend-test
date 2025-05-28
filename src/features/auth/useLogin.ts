@@ -4,12 +4,11 @@ import { LoginFormInput } from "@/schema/user.schema"
 import { useAuth } from "@/provider/auth-context"
 import { toast } from "sonner"
 import { toastStyle } from "@/lib/toast"
+import { AxiosError } from "axios"
 
 interface UseLoginOptions {
   onSuccess?: () => void
 }
-
-import { AxiosError } from "axios"
 
 export const useLogin = ({ onSuccess }: UseLoginOptions) => {
   const { login } = useAuth()
@@ -28,7 +27,7 @@ export const useLogin = ({ onSuccess }: UseLoginOptions) => {
       })
       onSuccess?.()
     },
-    onError: (error: unknown) => {
+    onError: (error) => {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           toast("Login gagal", {
