@@ -2,12 +2,16 @@ import { axiosInstance } from "@/lib/axios"
 import { Category } from "@/types/category.type"
 import { useQuery } from "@tanstack/react-query"
 
-export const useGetAllCategories = (search?: string) => {
+export const useGetAllCategories = (
+  search?: string,
+  page: number = 1,
+  perPage: number = 10
+) => {
   return useQuery({
-    queryKey: ["categories", search],
+    queryKey: ["categories", search, page],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `categories?limit=100${search ? `&search=${search}` : ""}`
+        `categories?limit=${perPage}&page=${page}${search ? `&search=${search}` : ""}`
       )
 
       const { data, currentPage, totalData, totalPages } = response.data

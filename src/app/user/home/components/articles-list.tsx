@@ -1,25 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useGetAllArticles } from "@/features/article/useGetAllArticles";
 import { Article } from "@/types/article.type";
-import { ArticlePagination } from "./article-pagination";
 import { ArticleCard } from "@/components/article-card";
+import Paginator from "@/components/shared/paginator";
+import usePagination from "@/features/usePagination";
 
 const ArticleList = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const { currentPage, setCurrentPage } = usePagination();
+  const perPage = 9
 
-  const initialPage = Number(searchParams.get("page")) || 1;
-  const [currentPage, setCurrentPage] = useState(initialPage);
-
-  const { data } = useGetAllArticles(currentPage);
+  const { data } = useGetAllArticles('', currentPage, perPage);
   const { articles, limit, total } = data || {};
-
-  useEffect(() => {
-    router.replace(`?page=${currentPage}`);
-  }, [currentPage, router]);
 
   return (
     <div className="px-5 pt-8 pb-24 md:px-24">
@@ -33,10 +25,9 @@ const ArticleList = () => {
         ))}
       </div>
 
-      <ArticlePagination
+      <Paginator
         currentPage={currentPage}
-        total={total ?? 0}
-        limit={limit}
+        totalPages={Math.ceil(total / limit)}
         onPageChange={setCurrentPage}
       />
     </div>

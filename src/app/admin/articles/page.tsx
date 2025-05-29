@@ -1,47 +1,57 @@
-"use client"
+"use client";
 
-import SearchBar from "@/components/search"
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { dateFormatter } from "@/utils/date-formatter"
-import { useGetAllArticles } from "@/features/article/useGetAllArticles"
-import { Article } from "@/types/article.type"
-import Image from "next/image"
-import Link from "next/link"
-import { useState } from "react"
-import DeleteModal from "./components/delete-modal"
+} from "@/components/ui/table";
+import { dateFormatter } from "@/utils/date-formatter";
+import { useGetAllArticles } from "@/features/article/useGetAllArticles";
+import { Article } from "@/types/article.type";
+import Image from "next/image";
+import Link from "next/link";
+import SearchBar from "@/components/search";
+import DeleteModal from "./components/delete-modal";
+import Paginator from "@/components/shared/paginator";
+import usePagination from "@/features/usePagination";
+import useSearch from "@/features/useSearch";
 
-const tableHeaders = ["Thumbnails", "Title", "Category", "Created At", "Action"]
+const tableHeaders = ["Thumbnails", "Title", "Category", "Created At", "Action"];
 
 const ArticlesPage = () => {
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
-  const [isDeleting, setIsDeleting] = useState<boolean>(false)
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
-  const { data } = useGetAllArticles()
-  const articles: Article[] = data?.articles || []
+  const { currentPage, setCurrentPage } = usePagination();
+  const { searchValue, setSearchValue } = useSearch();
+
+  const { data } = useGetAllArticles(searchValue, currentPage, 1);
+  const articles: Article[] = data?.articles || [];
+  const total = data?.total || 0;
+  const limit = data?.limit || 10;
 
   const handleOpenDeleteModal = (article: Article) => {
-    setSelectedArticle(article)
-    setIsDeleting(true)
-  }
+    setSelectedArticle(article);
+    setIsDeleting(true);
+  };
 
   return (
     <div className="bg-white rounded-lg border">
-      <div className="border-b p-6">Total Articles : 212</div>
+      <div className="border-b p-6">Total Articles: {total}</div>
 
       <div className="flex justify-between items-center p-6 border-b">
         <SearchBar
           placeholder="Search Article"
+          value={searchValue}
+          onChange={setSearchValue}
         />
+
 
         <Button asChild className="font-medium">
           <Link href="/admin/articles/create">
@@ -50,14 +60,11 @@ const ArticlesPage = () => {
         </Button>
       </div>
 
-      <Table>
+      <Table className="border-b">
         <TableHeader>
           <TableRow className="bg-slate-100">
             {tableHeaders.map((header) => (
-              <TableHead
-                key={header}
-                className="text-center text-sm font-medium"
-              >
+              <TableHead key={header} className="text-center text-sm font-medium">
                 {header}
               </TableHead>
             ))}
@@ -79,7 +86,6 @@ const ArticlesPage = () => {
                 ) : (
                   <div className="w-14 h-14 rounded-md bg-gray-200 m-auto" />
                 )}
-
               </TableCell>
               <TableCell className="text-center text-sm text-slate-600 font-normal whitespace-normal">
                 {article.title}
@@ -116,12 +122,23 @@ const ArticlesPage = () => {
             </TableRow>
           ))}
         </TableBody>
-        <TableCaption>A list of your articles.</TableCaption>
       </Table>
 
-      <DeleteModal isOpen={isDeleting} onClose={() => setIsDeleting(false)} article={selectedArticle} />
-    </div>
-  )
-}
+      <div className="my-5">
+        <Paginator
+          currentPage={currentPage}
+          totalPages={Math.ceil(total / limit)}
+          onPageChange={setCurrentPage}
+        />
+      </div>
 
-export default ArticlesPage
+      <DeleteModal
+        isOpen={isDeleting}
+        onClose={() => setIsDeleting(false)}
+        article={selectedArticle}
+      />
+    </div>
+  );
+};
+
+export default ArticlesPage;

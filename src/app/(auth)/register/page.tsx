@@ -1,31 +1,31 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useRegister } from "@/features/auth/useRegister";
-import { RegisterFormInput, UserValidation } from "@/schema/user.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+
+import InputField from "@/components/form/input-field";
+import PasswordField from "@/components/form/password-field";
+import SelectField from "@/components/form/select-field";
+
+import { useRegister } from "@/features/auth/useRegister";
+import { RegisterFormInput, UserValidation } from "@/schema/user.schema";
 
 const RegisterPage = () => {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<RegisterFormInput>({
     resolver: zodResolver(UserValidation.REGISTER),
     defaultValues: {
       username: "",
       password: "",
-      role: ""
-    }
-  })
+      role: "",
+    },
+  });
 
   const { mutate } = useRegister({
     onSuccess: () => {
@@ -42,97 +42,41 @@ const RegisterPage = () => {
     <div className="flex items-center justify-center sm:bg-gray-100 h-screen w-screen">
       <div className="w-full max-w-sm bg-white px-4 py-10 rounded-lg mx-4">
         <h1 className="text-center font-bold text-xl">Logo Ipsum</h1>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="username">
-                Username
-              </Label>
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        id="username"
-                        placeholder="Input username"
-                        autoComplete="username"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className=" space-y-2">
-              <Label htmlFor="password">
-                Password
-              </Label>
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <>
-                    <FormItem className="relative">
-                      <FormControl>
-                        <Input
-                          id="password"
-                          type={showPassword ? "text" : "password"}
-                          placeholder="Input password"
-                          {...field}
-                          className="pr-10"
-                        />
-                      </FormControl>
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(prev => !prev)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
-                      >
-                        {showPassword ? <Eye className="size-4" /> : <EyeOff className="size-4" />}
-                      </button>
+            <InputField
+              label="Username"
+              id="username"
+              placeholder="Input username"
+              control={form.control}
+              name="username"
+            />
 
-                    </FormItem>
-                    <FormMessage />
-                  </>
-                )}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="role">
-                Role
-              </Label>
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select Role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectItem value="User">User</SelectItem>
-                            <SelectItem value="Admin">Admin</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <PasswordField
+              label="Password"
+              id="password"
+              placeholder="Input password"
+              control={form.control}
+              name="password"
+            />
+
+            <SelectField
+              label="Role"
+              name="role"
+              control={form.control}
+              placeholder="Select Role"
+              options={[
+                { value: "User", label: "User" },
+                { value: "Admin", label: "Admin" },
+              ]}
+            />
+
             <Button type="submit" className="mt-2 w-full">
               Register
             </Button>
           </form>
+
           <div className="mt-5 text-sm text-center">
             <span className="text-slate-600">Already have an account?</span>
             <Link href="/login" className="text-primary ms-2 underline">
@@ -142,7 +86,7 @@ const RegisterPage = () => {
         </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RegisterPage
+export default RegisterPage;

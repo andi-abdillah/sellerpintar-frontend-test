@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import BackButton from "@/components/ui/back-button";
 
-import ImageInputField from "@/components/form/image-input-field";
+import ImageInputField from "@/components/form/image-field";
 import InputField from "@/components/form/input-field";
 import SelectField from "@/components/form/select-field";
 
