@@ -1,15 +1,17 @@
 import { axiosInstance } from "@/lib/axios"
 import { toastStyle } from "@/lib/toast"
-import { RegisterFormInput } from "@/schema/user.schema"
+import { LoginFormInput, RegisterFormInput } from "@/schema/user.schema"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { AxiosError } from "axios"
+import { UseFormSetError } from "react-hook-form"
 
 interface UseRegisterOptions {
   onSuccess?: () => void
+  setError?: UseFormSetError<LoginFormInput>
 }
 
-export const useRegister = ({ onSuccess }: UseRegisterOptions) => {
+export const useRegister = ({ onSuccess, setError }: UseRegisterOptions) => {
   return useMutation({
     mutationFn: async (data: RegisterFormInput) => {
       const response = await axiosInstance.post("auth/register", data)
@@ -24,19 +26,18 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions) => {
       onSuccess?.()
     },
     onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 400) {
-          toast("Invalid input", {
-            description: "Please check your details and try again.",
-            style: toastStyle.error,
-          })
-          return
-        }
+      if (error instanceof AxiosError && error.response?.status === 400) {
+        console.log(error.response)
+
+        setError?.("username", {
+          type: "manual",
+          message: "Username is already taken",
+        })
       }
 
       toast("Registration failed", {
         description:
-          "We couldn't complete your registration. Please try again later.",
+          "We couldn't complete your registration. Please try again.",
         style: toastStyle.error,
       })
     },

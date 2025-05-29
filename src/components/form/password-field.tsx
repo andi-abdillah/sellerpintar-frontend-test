@@ -29,27 +29,28 @@ const PasswordField = <T extends FieldValues>({
         control={control}
         name={name}
         render={({ field }) => (
-          <FormItem className="relative">
-            <FormControl>
-              <Input
-                id={id}
-                placeholder={placeholder}
-                type={showPassword ? "text" : "password"}
-                autoComplete={name}
-                className="pr-10"
-                {...field}
-              />
-            </FormControl>
-            <button
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
-            </button>
+          <>
+            <FormItem className="relative">
+              <FormControl>
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder={placeholder}
+                  {...field}
+                  className="pr-10"
+                />
+              </FormControl>
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+              </button>
+            </FormItem>
             <FormMessage />
-          </FormItem>
+          </>
         )}
       />
     </div>

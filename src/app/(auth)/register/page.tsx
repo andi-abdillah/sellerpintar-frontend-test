@@ -32,6 +32,7 @@ const RegisterPage = () => {
       form.reset();
       router.push("/login");
     },
+    setError: form.setError
   });
 
   const onSubmit = (data: RegisterFormInput) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 
@@ -19,6 +19,7 @@ import { useGetAllCategories } from "@/features/category/useGetAllCategories";
 import { ArticleValidation, UpdateArticleInput } from "@/schema/article.schema";
 import { Article } from "@/types/article.type";
 import { Category } from "@/types/category.type";
+import Tiptap from "@/components/shared/tiptap";
 
 const EditArticlePage = () => {
   const router = useRouter();
@@ -98,12 +99,12 @@ const EditArticlePage = () => {
               }))}
             />
 
-            <InputField
-              label="Content"
-              id="content"
-              placeholder="Input content"
-              control={form.control}
+            <Controller
               name="content"
+              control={form.control}
+              render={({ field }) => (
+                <Tiptap value={field.value} onChange={field.onChange} />
+              )}
             />
 
             <div className="flex justify-end gap-3">

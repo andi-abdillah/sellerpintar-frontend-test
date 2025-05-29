@@ -1,4 +1,4 @@
-import { z, ZodType } from "zod";
+import { z, ZodType } from "zod"
 
 export class UserValidation {
   static LOGIN: ZodType = z.object({
@@ -10,7 +10,7 @@ export class UserValidation {
       .string()
       .min(1, "Please enter your required")
       .transform((val) => val.trim()),
-  });
+  })
 
   static REGISTER: ZodType = z.object({
     username: z
@@ -28,8 +28,8 @@ export class UserValidation {
       .refine((val) => ["User", "Admin"].includes(val), {
         message: "Role must be either 'User' or 'Admin'",
       }),
-  });
+  })
 }
 
-export type LoginFormInput = z.infer<typeof UserValidation.LOGIN>;
-export type RegisterFormInput = z.infer<typeof UserValidation.REGISTER>;
+export type LoginFormInput = z.infer<typeof UserValidation.LOGIN>
+export type RegisterFormInput = z.infer<typeof UserValidation.REGISTER>

@@ -30,6 +30,7 @@ const LoginPage = () => {
       form.reset();
       router.push("/user/home");
     },
+    setError: form.setError
   });
 
   const onSubmit = (data: LoginFormInput) => {

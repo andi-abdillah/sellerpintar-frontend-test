@@ -56,8 +56,8 @@ const ArticlesPage = () => {
     <div className="bg-white rounded-lg border">
       <div className="border-b p-6">Total Articles: {total}</div>
 
-      <div className="flex justify-between items-center p-6 border-b">
-        <div className="flex gap-2 m-auto">
+      <div className="flex p-6 border-b">
+        <div className="flex gap-2 m-auto w-full">
           <CategorySearch
             categories={categories}
             value={categoryName}
@@ -158,5 +158,7 @@ const ArticlesPage = () => {
     </div>
   );
 };
+
+ArticlesPage.title = "Articles";
 
 export default ArticlesPage;

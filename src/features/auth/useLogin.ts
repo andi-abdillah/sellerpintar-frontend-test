@@ -5,12 +5,14 @@ import { useAuth } from "@/provider/auth-context"
 import { toast } from "sonner"
 import { toastStyle } from "@/lib/toast"
 import { AxiosError } from "axios"
+import { UseFormSetError } from "react-hook-form"
 
 interface UseLoginOptions {
   onSuccess?: () => void
+  setError?: UseFormSetError<LoginFormInput>
 }
 
-export const useLogin = ({ onSuccess }: UseLoginOptions) => {
+export const useLogin = ({ onSuccess, setError }: UseLoginOptions) => {
   const { login } = useAuth()
 
   return useMutation({
@@ -28,18 +30,17 @@ export const useLogin = ({ onSuccess }: UseLoginOptions) => {
       onSuccess?.()
     },
     onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 401) {
-          toast("Authentication Error", {
-            description:
-              "Invalid credentials. Please double-check your email and password.",
-            style: toastStyle.error,
-          })
-          return
-        }
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        console.log(error.response)
+
+        setError?.("username", {
+          type: "manual",
+          message: "Invalid username or password",
+        })
       }
+
       toast("Something went wrong", {
-        description: "We couldn’t sign you in. Please try again shortly.",
+        description: "We couldn’t sign you in. Please try again.",
         style: toastStyle.error,
       })
     },

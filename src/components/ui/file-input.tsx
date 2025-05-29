@@ -97,8 +97,8 @@ const FileInput = ({
       ) : (
         <div className="flex flex-col items-center justify-center gap-2 pb-6 pt-5 text-center text-xs text-slate-500">
           <ImagePlus size={20} />
-          <p className="underline">Click to select file</p>
-          <p>Support File Type: jpg or png</p>
+          <p className="underline">Click to select a file</p>
+          <p>Supported file types: e.g. JPG, PNG</p>
           {fileInfo.name && (
             <div className="mt-2 text-xs text-slate-600">
               <p>{fileInfo.name}</p>
