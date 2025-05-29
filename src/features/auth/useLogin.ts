@@ -21,8 +21,8 @@ export const useLogin = ({ onSuccess }: UseLoginOptions) => {
     },
     onSuccess: (token) => {
       login(token)
-      toast("Login sukses", {
-        description: "Selamat datang kembali! Anda telah berhasil login.",
+      toast("Welcome back", {
+        description: "You're now signed in to your account.",
         style: toastStyle.success,
       })
       onSuccess?.()
@@ -30,15 +30,16 @@ export const useLogin = ({ onSuccess }: UseLoginOptions) => {
     onError: (error) => {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
-          toast("Login gagal", {
-            description: "Email atau password salah.",
+          toast("Authentication Error", {
+            description:
+              "Invalid credentials. Please double-check your email and password.",
             style: toastStyle.error,
           })
           return
         }
       }
-      toast("Login gagal", {
-        description: "Login gagal, silahkan coba lagi.",
+      toast("Something went wrong", {
+        description: "We couldn’t sign you in. Please try again shortly.",
         style: toastStyle.error,
       })
     },

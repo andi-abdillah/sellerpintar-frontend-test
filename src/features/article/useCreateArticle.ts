@@ -1,8 +1,9 @@
 import { axiosInstance } from "@/lib/axios"
 import { toastStyle } from "@/lib/toast"
-import { CreateArticle } from "@/schema/article.schema"
+import { CreateArticleInput } from "@/schema/article.schema"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
+import { AxiosError } from "axios"
 
 interface UseCreateArticleOptions {
   onSuccess?: () => void
@@ -12,7 +13,7 @@ export const useCreateArticle = ({ onSuccess }: UseCreateArticleOptions) => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (data: CreateArticle) => {
+    mutationFn: async (data: CreateArticleInput) => {
       const formData = new FormData()
       formData.append("image", data.thumbnail[0])
 
@@ -32,11 +33,29 @@ export const useCreateArticle = ({ onSuccess }: UseCreateArticleOptions) => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] })
-      toast("Article Created", {
-        description: "Article has been created successfully.",
+      toast("Article published", {
+        description: "Your article has been successfully created.",
         style: toastStyle.success,
       })
       onSuccess?.()
+    },
+
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        switch (error.response?.status) {
+          case 401:
+            toast("Unauthorized", {
+              description: "You must be logged in to perform this action.",
+              style: toastStyle.error,
+            })
+            return
+        }
+      }
+
+      toast("Unexpected error", {
+        description: "Something went wrong. Please try again later.",
+        style: toastStyle.error,
+      })
     },
   })
 }

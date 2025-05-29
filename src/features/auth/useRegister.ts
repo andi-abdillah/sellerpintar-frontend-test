@@ -16,8 +16,9 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions) => {
       return response.data
     },
     onSuccess: () => {
-      toast("Register sukses", {
-        description: "Akun Anda berhasil dibuat. Silahkan login!",
+      toast("Account created", {
+        description:
+          "Your account has been successfully registered. You can now sign in.",
         style: toastStyle.success,
       })
       onSuccess?.()
@@ -25,15 +26,17 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions) => {
     onError: (error) => {
       if (error instanceof AxiosError) {
         if (error.response?.status === 400) {
-          toast("Register gagal", {
-            description: "Data yang Anda masukkan tidak valid.",
+          toast("Invalid input", {
+            description: "Please check your details and try again.",
             style: toastStyle.error,
           })
           return
         }
       }
-      toast("Register gagal", {
-        description: "Pendaftaran gagal, silakan coba lagi.",
+
+      toast("Registration failed", {
+        description:
+          "We couldn't complete your registration. Please try again later.",
         style: toastStyle.error,
       })
     },

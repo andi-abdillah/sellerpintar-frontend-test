@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/lib/axios"
 import { toastStyle } from "@/lib/toast"
-import { CreateCategory } from "@/schema/category.schema"
+import { CreateCategoryInput } from "@/schema/category.schema"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { toast } from "sonner"
@@ -13,14 +13,14 @@ export const useCreateCategory = ({ onSuccess }: UseCreateCategoryOptions) => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (data: CreateCategory) => {
+    mutationFn: async (data: CreateCategoryInput) => {
       const response = await axiosInstance.post("categories", data)
       return response.data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] })
-      toast("Kategori berhasil ditambahkan", {
-        description: "Kategori baru telah ditambahkan.",
+      toast("Category created", {
+        description: "The new category has been successfully added.",
         style: toastStyle.success,
       })
       onSuccess?.()
@@ -29,15 +29,14 @@ export const useCreateCategory = ({ onSuccess }: UseCreateCategoryOptions) => {
       if (error instanceof AxiosError) {
         switch (error.response?.status) {
           case 401:
-            toast("Gagal menambahkan kategori", {
-              description: "Anda belum login, silahkan login terlebih dahulu.",
+            toast("Action not authorized", {
+              description: "You must be logged in to create a category.",
               style: toastStyle.error,
             })
             return
           case 403:
-            toast("Gagal menambahkan kategori", {
-              description:
-                "Anda tidak memiliki izin untuk menambahkan kategori.",
+            toast("Access denied", {
+              description: "You don't have permission to perform this action.",
               style: toastStyle.error,
             })
             return
@@ -45,8 +44,9 @@ export const useCreateCategory = ({ onSuccess }: UseCreateCategoryOptions) => {
             break
         }
       }
-      toast("Gagal menambahkan kategori", {
-        description: "Terjadi kesalahan saat menyimpan kategori.",
+
+      toast("Creation failed", {
+        description: "An unexpected error occurred. Please try again later.",
         style: toastStyle.error,
       })
     },

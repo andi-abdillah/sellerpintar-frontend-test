@@ -1,145 +1,90 @@
 "use client";
 
-import BackButton from "@/components/ui/back-button"
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useCreateArticle } from "@/features/article/useCreateArticle";
-import { useGetAllCategories } from "@/features/category/useGetAllCategories";
-import { ACCEPTED_FILE_TYPES, ArticleValidation, CreateArticle } from "@/schema/article.schema";
-import { Category } from "@/types/category.type";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import BackButton from "@/components/ui/back-button";
+
+import ImageInputField from "@/components/form/image-input-field";
+import InputField from "@/components/form/input-field";
+import SelectField from "@/components/form/select-field";
+
+import { useCreateArticle } from "@/features/article/useCreateArticle";
+import { useGetAllCategories } from "@/features/category/useGetAllCategories";
+import { ArticleValidation, CreateArticleInput } from "@/schema/article.schema";
+import { Category } from "@/types/category.type";
 
 const CreateArticlePage = () => {
   const router = useRouter();
+  const { data: categoriesResponse } = useGetAllCategories();
+  const categories: Category[] = categoriesResponse?.categories || [];
 
-  const form = useForm<CreateArticle>({
+  const form = useForm<CreateArticleInput>({
     resolver: zodResolver(ArticleValidation.CREATE),
     defaultValues: {
       thumbnail: undefined,
       title: "",
       content: "",
-      categoryId: ""
-    }
+      categoryId: "",
+    },
   });
-
-  const { data } = useGetAllCategories();
-  const categories: Category[] = data?.categories || [];
 
   const { mutate: createArticle } = useCreateArticle({
     onSuccess: () => {
       form.reset();
       router.push("/admin/articles");
-    }
+    },
   });
 
-  const onSubmit = (data: CreateArticle) => {
+  const onSubmit = (data: CreateArticleInput) => {
     createArticle(data);
   };
 
   return (
     <div className="bg-white rounded-lg border">
       <div className="p-6">
-        <div className="flex items-center gap-2"><BackButton /> Create Article</div>
+        <div className="flex items-center gap-2">
+          <BackButton /> Create Article
+        </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="thumbnail">Thumbnails</Label>
-              <FormField
-                control={form.control}
-                name="thumbnail"
-                render={({ field: { onChange, name } }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        id="thumbnail"
-                        type="file"
-                        accept={ACCEPTED_FILE_TYPES.join(", ")}
-                        name={name}
-                        onChange={(e) => onChange(e.target.files)}
-                      />
+            <ImageInputField
+              control={form.control}
+              name="thumbnail"
+              imageUrl=""
+              label="Thumbnail"
+            />
 
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        id="title"
-                        placeholder="Input title"
-                        autoComplete="title"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <FormField
-                control={form.control}
-                name="categoryId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select
-                        value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select Category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {categories.map((category) => (
-                              <SelectItem key={category.id} value={category.id}>
-                                {category.name}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <InputField
+              label="Title"
+              id="title"
+              placeholder="Input title"
+              control={form.control}
+              name="title"
+            />
 
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="content">Content</Label>
-              <FormField
-                control={form.control}
-                name="content"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        id="content"
-                        placeholder="Input content"
-                        autoComplete="content"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <SelectField
+              label="Category"
+              name="categoryId"
+              control={form.control}
+              options={categories.map((cat) => ({
+                value: cat.id,
+                label: cat.name,
+              }))}
+            />
+
+            <InputField
+              label="Content"
+              id="content"
+              placeholder="Input content"
+              control={form.control}
+              name="content"
+            />
+
             <div className="flex justify-end gap-3">
               <Button type="button" variant="outline">Cancel</Button>
               <Button type="button" variant="secondary">Preview</Button>
@@ -149,7 +94,7 @@ const CreateArticlePage = () => {
         </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreateArticlePage
+export default CreateArticlePage;

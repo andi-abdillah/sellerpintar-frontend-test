@@ -40,7 +40,7 @@ const ArticlesPage = () => {
 
       <div className="flex justify-between items-center p-6 border-b">
         <SearchBar
-          placeholder="Search Articles"
+          placeholder="Search Article"
         />
 
         <Button asChild className="font-medium">

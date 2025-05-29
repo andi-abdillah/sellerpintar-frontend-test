@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -9,13 +9,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Form } from "@/components/ui/form";
+
+import InputField from "@/components/form/input-field";
+
 import { useCreateCategory } from "@/features/category/useCreateCategory";
-import { CategoryValidation, CreateCategory } from "@/schema/category.schema"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { CategoryValidation, CreateCategoryInput } from "@/schema/category.schema";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 interface CreateModalProps {
   isOpen: boolean;
@@ -23,23 +25,23 @@ interface CreateModalProps {
 }
 
 const CreateModal = ({ isOpen = false, onClose = () => { } }: CreateModalProps) => {
-  const form = useForm<CreateCategory>({
+  const form = useForm<CreateCategoryInput>({
     defaultValues: {
-      name: ""
+      name: "",
     },
-    resolver: zodResolver(CategoryValidation.CREATE)
-  })
+    resolver: zodResolver(CategoryValidation.CREATE),
+  });
 
   const { mutate } = useCreateCategory({
     onSuccess: () => {
-      onClose()
-      form.reset()
-    }
-  })
+      onClose();
+      form.reset();
+    },
+  });
 
-  const onSubmit = (data: CreateCategory) => {
-    mutate(data)
-  }
+  const onSubmit = (data: CreateCategoryInput) => {
+    mutate(data);
+  };
 
   return (
     <Dialog open={isOpen}>
@@ -50,42 +52,28 @@ const CreateModal = ({ isOpen = false, onClose = () => { } }: CreateModalProps) 
         <DialogFooter>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 w-full space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Category</Label>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          id="name"
-                          placeholder="Input category"
-                          autoComplete="name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <InputField
+                label="Category"
+                id="name"
+                name="name"
+                control={form.control}
+                placeholder="Input category"
+              />
+
               <div className="flex justify-end gap-2 w-full">
                 <DialogClose asChild>
                   <Button type="button" variant="secondary" onClick={onClose}>
                     Cancel
                   </Button>
                 </DialogClose>
-                <Button type="submit">
-                  Add
-                </Button>
+                <Button type="submit">Add</Button>
               </div>
             </form>
           </Form>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default CreateModal
+export default CreateModal;

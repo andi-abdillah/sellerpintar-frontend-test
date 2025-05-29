@@ -16,5 +16,5 @@ export class CategoryValidation {
   })
 }
 
-export type CreateCategory = z.infer<typeof CategoryValidation.CREATE>
-export type UpdateCategory = z.infer<typeof CategoryValidation.UPDATE>
+export type CreateCategoryInput = z.infer<typeof CategoryValidation.CREATE>
+export type UpdateCategoryInput = z.infer<typeof CategoryValidation.UPDATE>

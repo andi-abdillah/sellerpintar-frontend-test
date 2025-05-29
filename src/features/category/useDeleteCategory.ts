@@ -18,8 +18,8 @@ export const useDeleteCategory = ({ onSuccess }: UseDeleteCategoryOptions) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] })
-      toast("Kategori berhasil dihapus", {
-        description: "Kategori telah dihapus.",
+      toast("Category deleted", {
+        description: "The category was removed successfully.",
         style: toastStyle.success,
       })
       onSuccess?.()
@@ -28,29 +28,30 @@ export const useDeleteCategory = ({ onSuccess }: UseDeleteCategoryOptions) => {
       if (error instanceof AxiosError) {
         switch (error.response?.status) {
           case 401:
-            toast("Gagal menghapus kategori", {
-              description: "Anda belum login, silahkan login terlebih dahulu.",
+            toast("Unauthorized", {
+              description: "You must be logged in to perform this action.",
               style: toastStyle.error,
             })
             return
           case 403:
-            toast("Gagal menghapus kategori", {
-              description: "Anda tidak memiliki izin untuk menghapus kategori.",
+            toast("Access denied", {
+              description:
+                "You do not have permission to delete this category.",
               style: toastStyle.error,
             })
             return
           case 404:
-            toast("Gagal menghapus kategori", {
-              description: "Kategori tidak ditemukan.",
+            toast("Category not found", {
+              description:
+                "The category you're trying to delete doesn't exist.",
               style: toastStyle.error,
             })
             return
-          default:
-            break
         }
       }
-      toast("Gagal menghapus kategori", {
-        description: "Terjadi kesalahan saat menghapus kategori.",
+      toast("Deletion failed", {
+        description:
+          "Something went wrong while deleting the category. Please try again.",
         style: toastStyle.error,
       })
     },
