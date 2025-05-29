@@ -46,7 +46,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`fixed top-0 right-0 left-0 px-6 py-8 sm:px-14 transition duration-500 ease-in-out
+      className={`fixed top-0 right-0 left-0 px-6 py-8 sm:px-14 transition duration-500 ease-in-out z-50
     ${isHomePage ? isNavbarScrolled ? "bg-primary" : "" : "bg-white border-b border-gray-200"}`}
     >
 

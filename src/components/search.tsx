@@ -32,16 +32,16 @@ const SearchBar = ({
   }, [debouncedOnChange])
 
   return (
-    <div className="relative">
+    <div className="relative text-muted-foreground">
       <Input
         id="search"
         type="text"
         placeholder={placeholder}
-        className="ps-10"
+        className="ps-10 bg-white"
         defaultValue={value}
         onChange={handleChange}
       />
-      <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+      <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 " />
     </div>
   )
 }

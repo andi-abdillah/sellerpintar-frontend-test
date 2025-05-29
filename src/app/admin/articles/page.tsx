@@ -21,6 +21,10 @@ import DeleteModal from "./components/delete-modal";
 import Paginator from "@/components/shared/paginator";
 import usePagination from "@/features/usePagination";
 import useSearch from "@/features/useSearch";
+import { Category } from "@/types/category.type";
+import { useGetAllCategories } from "@/features/category/useGetAllCategories";
+import CategorySearch from "@/components/shared/category-search";
+import useFilterArticlesByCategory from "@/features/article/useFilterArticlesByCategory";
 
 const tableHeaders = ["Thumbnails", "Title", "Category", "Created At", "Action"];
 
@@ -31,10 +35,17 @@ const ArticlesPage = () => {
   const { currentPage, setCurrentPage } = usePagination();
   const { searchValue, setSearchValue } = useSearch();
 
-  const { data } = useGetAllArticles(searchValue, currentPage, 1);
-  const articles: Article[] = data?.articles || [];
-  const total = data?.total || 0;
-  const limit = data?.limit || 10;
+  const { data: categoryResponse } = useGetAllCategories();
+  const categories: Category[] = categoryResponse?.categories || [];
+
+  const perPage = 10;
+
+  const { categoryName, categoryId, setCategory } = useFilterArticlesByCategory(categories);
+  const { data: articleResponse } = useGetAllArticles(searchValue, currentPage, perPage, categoryId);
+
+  const articles: Article[] = articleResponse?.articles || [];
+  const total = articleResponse?.total || 0;
+  const limit = articleResponse?.limit || 10;
 
   const handleOpenDeleteModal = (article: Article) => {
     setSelectedArticle(article);
@@ -46,12 +57,19 @@ const ArticlesPage = () => {
       <div className="border-b p-6">Total Articles: {total}</div>
 
       <div className="flex justify-between items-center p-6 border-b">
-        <SearchBar
-          placeholder="Search Article"
-          value={searchValue}
-          onChange={setSearchValue}
-        />
+        <div className="flex gap-2 m-auto">
+          <CategorySearch
+            categories={categories}
+            value={categoryName}
+            onChange={setCategory}
+          />
 
+          <SearchBar
+            placeholder="Search Article"
+            value={searchValue}
+            onChange={setSearchValue}
+          />
+        </div>
 
         <Button asChild className="font-medium">
           <Link href="/admin/articles/create">
