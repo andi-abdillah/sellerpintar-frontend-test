@@ -39,6 +39,7 @@ const Tiptap = ({ value, onChange }: TiptapProps) => {
     onUpdate({ editor }) {
       onChange(editor.getHTML())
     },
+    immediatelyRender: false,
   })
 
   useEffect(() => {

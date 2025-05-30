@@ -25,6 +25,8 @@ import { Category } from "@/types/category.type";
 import { useGetAllCategories } from "@/features/category/useGetAllCategories";
 import CategorySearch from "@/components/shared/category-search";
 import useFilterArticlesByCategory from "@/features/article/useFilterArticlesByCategory";
+import { useFormPreview } from "@/provider/form-preview-context";
+import { useRouter } from "next/navigation";
 
 const tableHeaders = ["Thumbnails", "Title", "Category", "Created At", "Action"];
 
@@ -34,6 +36,9 @@ const ArticlesPage = () => {
 
   const { currentPage, setCurrentPage } = usePagination();
   const { searchValue, setSearchValue } = useSearch();
+  const { setData } = useFormPreview();
+
+  const router = useRouter();
 
   const { data: categoryResponse } = useGetAllCategories();
   const categories: Category[] = categoryResponse?.categories || [];
@@ -50,6 +55,19 @@ const ArticlesPage = () => {
   const handleOpenDeleteModal = (article: Article) => {
     setSelectedArticle(article);
     setIsDeleting(true);
+  };
+
+  const handlePreview = (article: Article) => {
+    const previewData = {
+      id: article.id,
+      title: article.title,
+      content: article.content,
+      thumbnail: article.imageUrl,
+      categoryId: article.categoryId,
+    };
+
+    setData(previewData);
+    router.push("/admin/articles/preview");
   };
 
   return (
@@ -116,11 +134,11 @@ const ArticlesPage = () => {
               </TableCell>
               <TableCell className="text-center text-sm text-slate-600 font-normal space-x-2">
                 <Button
-                  asChild
                   variant="ghost"
                   className="text-primary text-sm underline"
+                  onClick={() => handlePreview(article)}
                 >
-                  <Link href="">Preview</Link>
+                  Preview
                 </Button>
                 <Button
                   asChild

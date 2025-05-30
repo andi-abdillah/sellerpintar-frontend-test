@@ -4,7 +4,7 @@ import { Article } from "@/types/article.type"
 
 export const useGetRelatedArticles = (
   categoryId: string,
-  excludeArticleId: string
+  excludeArticleId?: string
 ) => {
   return useQuery({
     queryKey: ["related-articles", categoryId, excludeArticleId],
@@ -16,9 +16,11 @@ export const useGetRelatedArticles = (
       const articles: Article[] = response.data.data
 
       return articles
-        .filter((article) => article.id !== excludeArticleId)
+        .filter(
+          (article) => !excludeArticleId || article.id !== excludeArticleId
+        )
         .slice(0, 3)
     },
-    enabled: !!categoryId && !!excludeArticleId,
+    enabled: !!categoryId,
   })
 }

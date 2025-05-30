@@ -1,15 +1,5 @@
 "use client";
 
-import { Button } from "../ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +12,7 @@ import { useAuth } from "@/provider/auth-context";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import ConfirmDialog from "./confirm-dialog";
 
 const UserDropdown = ({ textColorClass = "" }: { textColorClass?: string }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -54,24 +45,15 @@ const UserDropdown = ({ textColorClass = "" }: { textColorClass?: string }) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Dialog open={isLogoutDialogOpen} onOpenChange={setIsLogoutDialogOpen}>
-        <DialogContent className="sm:max-w-sm [&>button.absolute]:hidden">
-          <DialogHeader>
-            <DialogTitle>Logout</DialogTitle>
-            <DialogDescription>Are you sure want to logout?</DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button type="button" onClick={logout}>
-              Logout
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ConfirmDialog
+        open={isLogoutDialogOpen}
+        onOpenChange={setIsLogoutDialogOpen}
+        onConfirm={logout}
+        title="Logout"
+        description="Are you sure want to logout?"
+        confirmText="Logout"
+        cancelText="Cancel"
+      />
 
       {isDropdownOpen && (
         <div

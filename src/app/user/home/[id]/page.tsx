@@ -19,7 +19,7 @@ const ArticleDetailPage = () => {
     <div className="py-24 max-w-7xl mx-auto">
       <div className="py-10 px-5 md:px-40 flex items-center flex-col space-y-4">
         <div className="text-slate-600 text-center text-sm font-medium">
-          {dateFormatter(article?.createdAt)} . Creted by {article?.user?.username}
+          {dateFormatter(article?.createdAt)} . Created by {article?.user?.username}
         </div>
         <h1 className="text-2xl md:text-3xl text-center text-slate-900 font-semibold">{article?.title}</h1>
         {article?.imageUrl && (
@@ -44,8 +44,6 @@ const ArticleDetailPage = () => {
           </div>
         )}
       </div>
-
-
     </div>
   )
 }

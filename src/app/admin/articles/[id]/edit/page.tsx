@@ -20,12 +20,16 @@ import { ArticleValidation, UpdateArticleInput } from "@/schema/article.schema";
 import { Article } from "@/types/article.type";
 import { Category } from "@/types/category.type";
 import Tiptap from "@/components/shared/tiptap";
+import { toast } from "sonner";
+import { toastStyle } from "@/lib/toast";
+import { useFormPreview } from "@/provider/form-preview-context";
 
 const EditArticlePage = () => {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
   const { data: articleResponse } = useGetArticleById(id);
   const { data: categoriesResponse } = useGetAllCategories();
+  const { setData } = useFormPreview();
 
   const article = articleResponse as Article;
   const categories: Category[] = categoriesResponse?.categories || [];
@@ -63,6 +67,45 @@ const EditArticlePage = () => {
       ...data,
       oldImageUrl: article?.imageUrl || "",
     });
+  };
+
+  const handlePreview = () => {
+    const formData = form.getValues();
+
+    const hasNewThumbnail =
+      formData.thumbnail instanceof FileList && formData.thumbnail.length > 0;
+    const hasExistingThumbnail = !!article?.imageUrl;
+
+    if (!hasNewThumbnail && !hasExistingThumbnail) {
+      toast("Please fill in all the required fields.", {
+        description: "Thumbnail is required either as a new upload or existing image.",
+        style: toastStyle.error,
+      });
+      return;
+    }
+
+    if (!formData.title || !formData.content || !formData.categoryId) {
+      toast("Please fill in all the required fields.", {
+        description: "Make sure all fields (Title, Content, and Category) are filled out before previewing.",
+        style: toastStyle.error,
+      });
+      return;
+    }
+
+    const previewData = {
+      ...formData,
+      id,
+      thumbnail: hasNewThumbnail ? formData.thumbnail : article.imageUrl,
+    };
+
+    setData(previewData);
+    router.push("/admin/articles/preview");
+  };
+
+
+  const handleCancel = () => {
+    form.reset();
+    router.push("/admin/articles");
   };
 
   return (
@@ -108,8 +151,12 @@ const EditArticlePage = () => {
             />
 
             <div className="flex justify-end gap-3">
-              <Button type="button" variant="outline">Cancel</Button>
-              <Button type="button" variant="secondary">Preview</Button>
+              <Button type="button" variant="outline" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button type="button" variant="secondary" onClick={handlePreview}>
+                Preview
+              </Button>
               <Button type="submit">Submit</Button>
             </div>
           </form>
