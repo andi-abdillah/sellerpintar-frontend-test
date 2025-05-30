@@ -10,7 +10,7 @@ export const useGetRelatedArticles = (
     queryKey: ["related-articles", categoryId, excludeArticleId],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/articles?category=${categoryId}&limit=3`
+        `/articles?category=${categoryId}&limit=4`
       )
 
       const articles: Article[] = response.data.data

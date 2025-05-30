@@ -66,8 +66,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove("token");
     Cookies.remove("user_role");
     setUser(null);
-    toast("Logout sukses", {
-      description: "Sesi Anda sudah berakhir.",
+    toast("Logout successful", {
+      description: "Your session has ended.",
       style: toastStyle.success,
     });
     router.replace("/login");

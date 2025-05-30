@@ -27,7 +27,7 @@ const Navbar = () => {
     >
       <div className={`flex justify-between w-full ${textColorClass}`}>
         <div className="text-xl">Logoipsum</div>
-        <UserDropdown textColorClass={textColorClass} />
+        <UserDropdown textColorClass={textColorClass} profileHref="/user/profile" />
       </div>
     </div>
   );

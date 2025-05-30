@@ -5,6 +5,7 @@ import { useGetArticleById } from "@/features/article/useGetArticleById";
 import { useGetRelatedArticles } from "@/features/article/useGetRelatedArticles";
 import { Article } from "@/types/article.type";
 import { dateFormatter } from "@/utils/date-formatter";
+import { Dot } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
@@ -18,8 +19,8 @@ const ArticleDetailPage = () => {
   return (
     <div className="py-24 max-w-7xl mx-auto">
       <div className="py-10 px-5 md:px-40 flex items-center flex-col space-y-4">
-        <div className="text-slate-600 text-center text-sm font-medium">
-          {dateFormatter(article?.createdAt)} . Created by {article?.user?.username}
+        <div className="flex items-center justify-center flex-wrap text-slate-600 text-center text-sm font-medium">
+          {dateFormatter(article?.createdAt)} <Dot /> Created by {article?.user?.username}
         </div>
         <h1 className="text-2xl md:text-3xl text-center text-slate-900 font-semibold">{article?.title}</h1>
         {article?.imageUrl && (
@@ -34,9 +35,9 @@ const ArticleDetailPage = () => {
         <p className="text-slate-700 text-base font-normal" dangerouslySetInnerHTML={{ __html: article?.content || "" }} />
 
         {relatedArticles.length > 0 && (
-          <div className="mt-12 w-full md:px-5">
+          <div className="mt-12 w-full">
             <h4 className="text-slate-900 text-xl font-bold">Other articles</h4>
-            <div className="mt-6 w-full flex flex-wrap gap-14">
+            <div className="mt-6 mb-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
               {relatedArticles.map((article) => (
                 <ArticleCard key={article.id} article={article} />
               ))}

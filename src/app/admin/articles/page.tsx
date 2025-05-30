@@ -74,7 +74,7 @@ const ArticlesPage = () => {
     <div className="bg-white rounded-lg border">
       <div className="border-b p-6">Total Articles: {total}</div>
 
-      <div className="flex p-6 border-b">
+      <div className="flex flex-col-reverse flex-col sm:flex-row p-6 gap-3 border-b">
         <div className="flex gap-2 m-auto w-full">
           <CategorySearch
             categories={categories}
@@ -89,7 +89,7 @@ const ArticlesPage = () => {
           />
         </div>
 
-        <Button asChild className="font-medium">
+        <Button asChild className="self-end font-medium w-max">
           <Link href="/admin/articles/create">
             <Plus /> Add Article
           </Link>
@@ -117,7 +117,7 @@ const ArticlesPage = () => {
                     width={50}
                     height={50}
                     priority
-                    className="w-14 h-14 rounded-md m-auto"
+                    className="object-cover w-14 h-14 rounded-md m-auto"
                   />
                 ) : (
                   <div className="w-14 h-14 rounded-md bg-gray-200 m-auto" />

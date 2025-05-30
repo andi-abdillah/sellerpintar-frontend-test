@@ -12,14 +12,16 @@ const CategorySearch = ({
   categories,
   value,
   onChange,
+  className,
 }: {
   categories: Category[];
   value: string;
   onChange: (value: string) => void;
+  className?: string;
 }) => {
   return (
     <Select onValueChange={onChange} value={value}>
-      <SelectTrigger className="w-32 bg-white text-slate-600">
+      <SelectTrigger className={`w-32 bg-white text-slate-600 ${className}`}>
         <SelectValue placeholder="Category" />
       </SelectTrigger>
       <SelectContent>

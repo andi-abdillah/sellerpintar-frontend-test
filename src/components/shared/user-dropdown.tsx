@@ -14,7 +14,13 @@ import Link from "next/link";
 import { useState } from "react";
 import ConfirmDialog from "./confirm-dialog";
 
-const UserDropdown = ({ textColorClass = "" }: { textColorClass?: string }) => {
+const UserDropdown = ({
+  textColorClass = "",
+  profileHref = "",
+}: {
+  textColorClass?: string;
+  profileHref: string;
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
 
@@ -23,12 +29,16 @@ const UserDropdown = ({ textColorClass = "" }: { textColorClass?: string }) => {
   return (
     <>
       <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-        <DropdownMenuTrigger className={`flex items-center gap-2 cursor-pointer text-sm text-gray-700 ${textColorClass}`}>
+        <DropdownMenuTrigger
+          className={`flex items-center gap-2 cursor-pointer text-sm text-gray-700 ${textColorClass}`}
+        >
           <UserInitialIcon username={user?.username} size={30} />
-          <span className="underline hidden capitalize sm:inline">{user?.username}</span>
+          <span className="underline hidden capitalize sm:inline">
+            {user?.username}
+          </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="mt-2 w-52">
-          <Link href="/user/profile">
+          <Link href={profileHref}>
             <DropdownMenuItem>My Account</DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />

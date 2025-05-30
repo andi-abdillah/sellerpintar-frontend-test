@@ -54,14 +54,14 @@ const CategoriesPage = () => {
     <div className="bg-white rounded-lg border">
       <div className="border-b p-6">Total Category : {total}</div>
 
-      <div className="flex justify-between items-center p-6 border-b">
+      <div className="flex flex-col-reverse flex-col sm:flex-row p-6 gap-3 border-b">
         <SearchBar
           placeholder="Search Category"
           value={searchValue}
           onChange={setSearchValue}
         />
-
-        <Button className="font-medium" onClick={() => openModal("create")}>
+ 
+        <Button className="self-end font-medium w-max" onClick={() => openModal("create")}>
           <Plus /> Add Category
         </Button>
       </div>

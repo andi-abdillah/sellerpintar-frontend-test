@@ -34,23 +34,24 @@ const Home = () => {
     <>
       <div
         style={{
-          height: "500px",
           backgroundImage: "url(/assets/banner.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
+        className="h-screen sm:h-[500px]"
       >
         <div className="flex items-center justify-center w-full h-full bg-primary/[86%]">
           <div className="text-white text-center px-4">
             <h3 className="text-base">Blog genzet</h3>
             <h1 className="mt-4 max-w-3xl text-4xl sm:text-5xl">The Journal : Design Resources, Interviews, and Industry News</h1>
             <h2 className="mt-4 ttext-xl sm:text-2xl">Your daily dose of design insights!</h2>
-            <div className="flex justify-center gap-2 w-max mt-10 mx-auto bg-blue-500 p-2 rounded-lg">
+            <div className="flex flex-col sm:flex-row justify-center gap-2 w-max mt-10 mx-auto bg-blue-500 p-2 rounded-lg">
               <CategorySearch
                 categories={categories}
                 value={categoryName}
                 onChange={setCategory}
+                className="w-full sm:w-32"
               />
 
               <SearchBar
@@ -67,7 +68,7 @@ const Home = () => {
           Showing: {articles?.length ?? 0} of {total ?? 0} articles
         </div>
 
-        <div className="mt-6 mb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14 place-items-center">
+        <div className="mt-6 mb-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
           {articles?.map((article: Article) => (
             <ArticleCard key={article.id} article={article} />
           ))}
