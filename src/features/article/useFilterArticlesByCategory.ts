@@ -1,7 +1,11 @@
 import { useSearchParams, useRouter } from "next/navigation"
 import { Category } from "@/types/category.type"
 
-const useFilterArticlesByCategory = (categories: Category[]) => {
+const useFilterArticlesByCategory = ({
+  categories,
+}: {
+  categories: Category[]
+}) => {
   const searchParams = useSearchParams()
   const router = useRouter()
 

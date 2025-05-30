@@ -8,7 +8,7 @@ type Props = {
   article: Article;
 };
 
-export const ArticleCard = ({ article }: Props) => {
+const ArticleCard = ({ article }: Props) => {
   return (
     <div className="w-72 h-full space-y-4">
       <div className="h-44 overflow-hidden rounded-xl">
@@ -40,3 +40,6 @@ export const ArticleCard = ({ article }: Props) => {
     </div>
   );
 };
+
+
+export default ArticleCard

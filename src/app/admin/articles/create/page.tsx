@@ -25,7 +25,7 @@ const CreateArticlePage = () => {
   const router = useRouter();
   const { setData } = useFormPreview();
 
-  const { data: categoriesResponse } = useGetAllCategories();
+  const { data: categoriesResponse } = useGetAllCategories({});
   const categories: Category[] = categoriesResponse?.categories || [];
 
   const form = useForm<CreateArticleInput>({

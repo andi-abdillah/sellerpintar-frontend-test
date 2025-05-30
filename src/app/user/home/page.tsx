@@ -2,7 +2,7 @@
 
 import { useGetAllArticles } from "@/features/article/useGetAllArticles";
 import { Article } from "@/types/article.type";
-import { ArticleCard } from "@/components/article-card";
+import ArticleCard from "@/components/shared/article-card";
 import Paginator from "@/components/shared/paginator";
 import usePagination from "@/features/usePagination";
 import { useGetAllCategories } from "@/features/category/useGetAllCategories";
@@ -10,21 +10,26 @@ import { Category } from "@/types/category.type";
 import useFilterArticlesByCategory from "@/features/article/useFilterArticlesByCategory";
 import useSearch from "@/features/useSearch";
 import CategorySearch from "@/components/shared/category-search";
-import SearchBar from "@/components/search";
+import SearchBar from "@/components/shared/search";
+import ArticleCardSkeleton from "@/components/skeletons/article-card-skeleton";
 
 const Home = () => {
   const { currentPage, setCurrentPage } = usePagination();
 
   const { searchValue, setSearchValue } = useSearch();
 
-
-  const { data: categoryResponse } = useGetAllCategories();
+  const { data: categoryResponse } = useGetAllCategories({});
   const categories: Category[] = categoryResponse?.categories || [];
 
   const perPage = 9;
 
-  const { categoryName, categoryId, setCategory } = useFilterArticlesByCategory(categories);
-  const { data: articleResponse } = useGetAllArticles(searchValue, currentPage, perPage, categoryId);
+  const { categoryName, categoryId, setCategory } = useFilterArticlesByCategory({ categories });
+  const { data: articleResponse, isLoading: articlesLoading } = useGetAllArticles({
+    search: searchValue,
+    currentPage,
+    perPage,
+    categoryId,
+  });
 
   const articles: Article[] = articleResponse?.articles || [];
   const total = articleResponse?.total || 0;
@@ -69,9 +74,13 @@ const Home = () => {
         </div>
 
         <div className="mt-6 mb-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
-          {articles?.map((article: Article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
+          {articlesLoading
+            ? Array.from({ length: 6 }).map((_, idx) => (
+              <ArticleCardSkeleton key={idx} />
+            ))
+            : articles.map((article: Article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
         </div>
 
         <Paginator
@@ -80,7 +89,7 @@ const Home = () => {
           onPageChange={setCurrentPage}
         />
       </div>
-    </ >
+    </>
   )
 }
 

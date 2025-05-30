@@ -1,5 +1,5 @@
 import { Search } from "lucide-react"
-import { Input } from "./ui/input"
+import { Input } from "../ui/input"
 import { useEffect, useMemo } from "react"
 import { debounce } from "lodash"
 

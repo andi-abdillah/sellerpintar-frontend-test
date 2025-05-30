@@ -13,6 +13,7 @@ import { useLogin } from "@/features/auth/useLogin";
 
 import InputField from "@/components/form/input-field";
 import PasswordField from "@/components/form/password-field";
+import Icon from "@/components/ui/icon";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -40,7 +41,9 @@ const LoginPage = () => {
   return (
     <div className="flex items-center justify-center sm:bg-gray-100 h-screen w-screen">
       <div className="w-full max-w-sm bg-white px-4 py-10 rounded-lg mx-4">
-        <h1 className="text-center font-bold text-xl">Logo Ipsum</h1>
+        <div className="flex justify-center">
+          <Icon color="primary" />
+        </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
@@ -65,7 +68,6 @@ const LoginPage = () => {
             </Button>
           </form>
 
-          {/* Link to Register */}
           <div className="mt-5 text-sm text-center">
             <span className="text-slate-600">Don’t have an account?</span>
             <Link href="/register" className="text-primary ms-2 underline">

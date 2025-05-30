@@ -27,8 +27,8 @@ import { useFormPreview } from "@/provider/form-preview-context";
 const EditArticlePage = () => {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  const { data: articleResponse } = useGetArticleById(id);
-  const { data: categoriesResponse } = useGetAllCategories();
+  const { data: articleResponse } = useGetArticleById({ id });
+  const { data: categoriesResponse } = useGetAllCategories({});
   const { setData } = useFormPreview();
 
   const article = articleResponse as Article;

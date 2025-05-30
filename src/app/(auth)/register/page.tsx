@@ -14,6 +14,7 @@ import SelectField from "@/components/form/select-field";
 
 import { useRegister } from "@/features/auth/useRegister";
 import { RegisterFormInput, UserValidation } from "@/schema/user.schema";
+import Icon from "@/components/ui/icon";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -42,7 +43,9 @@ const RegisterPage = () => {
   return (
     <div className="flex items-center justify-center sm:bg-gray-100 h-screen w-screen">
       <div className="w-full max-w-sm bg-white px-4 py-10 rounded-lg mx-4">
-        <h1 className="text-center font-bold text-xl">Logo Ipsum</h1>
+        <div className="flex justify-center">
+          <Icon color="primary" />
+        </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">

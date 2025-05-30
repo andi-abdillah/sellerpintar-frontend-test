@@ -1,14 +1,19 @@
 import { axiosInstance } from "@/lib/axios"
 import { useQuery } from "@tanstack/react-query"
 
-export const useGetAllArticles = (
-  search?: string,
-  currentPage: number = 1,
-  perPage: number = 10,
-  categoryid?: string
-) => {
+export const useGetAllArticles = ({
+  search = "",
+  currentPage = 1,
+  perPage = 10,
+  categoryId = "",
+}: {
+  search?: string
+  currentPage?: number
+  perPage?: number
+  categoryId?: string
+}) => {
   return useQuery({
-    queryKey: ["articles", search, currentPage, categoryid],
+    queryKey: ["articles", search, currentPage, categoryId],
     queryFn: async () => {
       const params = new URLSearchParams({
         sortBy: "createdAt",
@@ -18,8 +23,7 @@ export const useGetAllArticles = (
       })
 
       if (search) params.set("title", search)
-      if (categoryid && categoryid !== "all")
-        params.set("category", categoryid)
+      if (categoryId && categoryId !== "all") params.set("category", categoryId)
 
       const response = await axiosInstance.get(`/articles?${params.toString()}`)
 

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import UserDropdown from "@/components/shared/user-dropdown";
+import Icon from "@/components/ui/icon";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isNavbarScrolled, setIsNavbarScrolled] = useState(false);
@@ -26,7 +28,9 @@ const Navbar = () => {
         ${isHomePage ? (isNavbarScrolled ? "bg-primary" : "") : "bg-white border-b border-gray-200"}`}
     >
       <div className={`flex justify-between w-full ${textColorClass}`}>
-        <div className="text-xl">Logoipsum</div>
+        <Link href="/user/home">
+          <Icon color={isHomePage ? "white" : "primary"} />
+        </Link>
         <UserDropdown textColorClass={textColorClass} profileHref="/user/profile" />
       </div>
     </div>

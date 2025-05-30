@@ -6,7 +6,12 @@ const publicRoutes = ["/login", "/register"]
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  if (pathname.startsWith("/_next")) {
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/favicon.ico") ||
+    pathname.includes(".")
+  ) {
     return NextResponse.next()
   }
 
@@ -22,11 +27,24 @@ export function middleware(req: NextRequest) {
     if (role === "User") {
       return NextResponse.redirect(new URL("/user/home", req.url))
     }
-
     if (role === "Admin") {
       return NextResponse.redirect(new URL("/admin/dashboard", req.url))
     }
   }
 
+  if (token) {
+    if (pathname.startsWith("/user") && role !== "User") {
+      return NextResponse.redirect(new URL("/admin/dashboard", req.url))
+    }
+
+    if (pathname.startsWith("/admin") && role !== "Admin") {
+      return NextResponse.redirect(new URL("/user/home", req.url))
+    }
+  }
+
   return NextResponse.next()
+}
+
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api).*)"],
 }

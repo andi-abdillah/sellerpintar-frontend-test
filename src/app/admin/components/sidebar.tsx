@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useAuth } from "@/provider/auth-context";
 import ConfirmDialog from "@/components/shared/confirm-dialog";
 import { usePathname } from "next/navigation";
+import Icon from "@/components/ui/icon";
 
 const Sidebar = ({
   isSidebarOpen,
@@ -52,15 +53,17 @@ const Sidebar = ({
     <div className="relative">
       <div
         className={`p-4 bg-primary absolute lg:block w-64 h-full top-0 left-0 bottom-0 z-50 transition-transform transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0`}
+          } lg:translate-x-0`}
       >
-        <h1 className="px-4 py-2 text-white text-xl font-semibold flex justify-between items-center">
-          Logoipsum
+        <div className="flex items-center justify-between pl-4 py-2">
+          <Link href="/admin/dashboard">
+            <Icon />
+          </Link>
           <button className="lg:hidden text-white cursor-pointer" onClick={closeSidebar}>
             <X size={24} />
           </button>
-        </h1>
-        <ul className="mt-4 w-52">
+        </div>
+        <ul className="mt-6">
           {items.map((item) => (
             <Link key={item.name} href={item.url}>
               <li

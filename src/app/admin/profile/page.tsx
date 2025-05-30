@@ -9,7 +9,7 @@ const UserProfile = () => {
   const { user } = useAuth();
 
   return (
-    <div className="h-full flex justify-center items-center">
+    <div className="h-full flex justify-center items-center bg-white rounded-lg border">
       <div className="w-full max-w-sm mx-auto mt-10 p-6 rounded-md text-center space-y-6">
         <h2 className="text-xl font-bold text-gray-800">User Profile</h2>
         <div className="flex justify-center">

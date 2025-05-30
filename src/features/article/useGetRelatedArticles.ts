@@ -2,10 +2,13 @@ import { axiosInstance } from "@/lib/axios"
 import { useQuery } from "@tanstack/react-query"
 import { Article } from "@/types/article.type"
 
-export const useGetRelatedArticles = (
-  categoryId: string,
+export const useGetRelatedArticles = ({
+  categoryId,
+  excludeArticleId,
+}: {
+  categoryId: string
   excludeArticleId?: string
-) => {
+}) => {
   return useQuery({
     queryKey: ["related-articles", categoryId, excludeArticleId],
     queryFn: async () => {
