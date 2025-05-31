@@ -25,8 +25,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: null,
-  login: async () => { },
-  logout: () => { },
+  login: async () => {},
+  logout: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -55,11 +55,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(userData);
     } catch (error) {
       console.error("Invalid JWT:", error);
+      toast("Invalid JWT", {
+        description: "Unable to decode user information. Please log in again.",
+        style: toastStyle.error,
+      });
       logout();
     }
   };
 
-  const fetchAndStoreProfile = async () => {
+  const fetchAndStoreProfile = async (): Promise<void> => {
     try {
       const response = await axiosInstance.get("/auth/profile");
       const userData = response.data;
@@ -73,7 +77,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         sameSite: "strict",
         expires: 7,
       });
-    } catch {
+    } catch (error) {
+      console.error("Failed to fetch profile", error);
+      toast("Unexpected error", {
+        description: "Could not retrieve user data. Please try again later.",
+        style: toastStyle.error,
+      });
       logout();
     }
   };
@@ -87,23 +96,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       await fetchAndStoreProfile();
 
-      if (!user) {
-        toast("Unexpected error", {
-          description: "User data not available. Please try again later.",
-          style: toastStyle.error,
-        });
-        return;
-      }
-
-      if (user.role === "Admin") {
+      if (user?.role === "Admin") {
         router.replace("/admin/dashboard");
-      } else if (user.role === "User") {
+      } else if (user?.role === "User") {
         router.replace("/user/home");
-      } else {
-        toast("Unexpected error", {
-          description: "Unknown user role.",
-          style: toastStyle.error,
-        });
       }
     } catch {
       toast("Unexpected error", {
