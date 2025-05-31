@@ -1,3 +1,5 @@
+"use client"
+
 import { useSearchParams, useRouter } from "next/navigation"
 import { Category } from "@/types/category.type"
 
