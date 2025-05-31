@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           style: toastStyle.error,
         });
       }
-    } catch (error) {
+    } catch {
       toast("Unexpected error", {
         description: "Something went wrong. Please try again later.",
         style: toastStyle.error,
