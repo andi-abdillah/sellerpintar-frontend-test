@@ -87,13 +87,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       await fetchAndStoreProfile();
 
-      if (user?.role === "Admin") {
-        router.replace("/admin/dashboard");
-      } else {
-        router.replace("/user/home");
+      if (!user) {
+        toast("Unexpected error", {
+          description: "User data not available. Please try again later.",
+          style: toastStyle.error,
+        });
+        return;
       }
-    } catch {
-      console.error("Login failed");
+
+      if (user.role === "Admin") {
+        router.replace("/admin/dashboard");
+      } else if (user.role === "User") {
+        router.replace("/user/home");
+      } else {
+        toast("Unexpected error", {
+          description: "Unknown user role.",
+          style: toastStyle.error,
+        });
+      }
+    } catch (error) {
+      toast("Unexpected error", {
+        description: "Something went wrong. Please try again later.",
+        style: toastStyle.error,
+      });
     }
   };
 
