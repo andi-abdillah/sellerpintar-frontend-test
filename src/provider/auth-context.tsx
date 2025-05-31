@@ -25,8 +25,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: null,
-  login: async () => {},
-  logout: () => {},
+  login: async () => { },
+  logout: () => { },
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -62,10 +62,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const fetchAndStoreProfile = async (): Promise<void> => {
+  const fetchAndStoreProfile = async (): Promise<User> => {
     try {
       const response = await axiosInstance.get("/auth/profile");
-      const userData = response.data;
+      const userData: User = response.data;
       setUser(userData);
 
       const jwt = await new SignJWT(userData)
@@ -76,12 +76,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         sameSite: "strict",
         expires: 7,
       });
-    } catch  {
+
+      return userData;
+    } catch {
       toast("Unexpected error", {
         description: "Could not retrieve user data. Please try again later.",
         style: toastStyle.error,
       });
       logout();
+      throw new Error("Failed to fetch profile");
     }
   };
 
@@ -92,12 +95,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         expires: 7,
       });
 
-      await fetchAndStoreProfile();
+      const userData = await fetchAndStoreProfile();
 
-      if (user?.role === "Admin") {
-        router.replace("/admin/dashboard");
-      } else if (user?.role === "User") {
-        router.replace("/user/home");
+      if (userData.role === "Admin") {
+        router.push("/admin/dashboard");
+      } else if (userData.role === "User") {
+        router.push("/user/home");
+      } else {
+        toast("Unexpected error", {
+          description: "Unknown user role.",
+          style: toastStyle.error,
+        });
       }
     } catch {
       toast("Unexpected error", {
