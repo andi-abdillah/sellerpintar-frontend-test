@@ -17,3 +17,13 @@ export type Article = {
   category: Category
   user: User
 }
+
+export type ArticlePreview = {
+  id?: string;
+  title: string;
+  content: string;
+  thumbnail: FileList | string;
+  createdAt?: string;
+  categoryId?: string;
+  user?: User | null;
+};

@@ -7,12 +7,16 @@ import BackButton from "@/components/ui/back-button";
 import { useGetRelatedArticles } from "@/features/article/useGetRelatedArticles";
 import { Dot } from "lucide-react";
 import ArticleCard from "@/components/shared/article-card";
+import Footer from "@/components/core/footer";
+import { useAuth } from "@/provider/auth-context";
 
 const PreviewPage = () => {
   const { data: article } = useFormPreview();
 
-  const { data: relatedArticles = [] } = useGetRelatedArticles({
-    categoryId: article?.categoryId,
+  const { user } = useAuth()
+
+  const { data: relatedArticles = [], isLoading: isRelatedArticlesLoading } = useGetRelatedArticles({
+    categoryId: article?.categoryId || "",
     excludeArticleId: article?.id,
   })
 
@@ -33,7 +37,7 @@ const PreviewPage = () => {
 
         <div className="py-10 px-5 md:px-40 flex items-center flex-col space-y-4">
           <div className="flex items-center justify-center flex-wrap text-slate-600 text-center text-sm font-medium">
-            {dateFormatter(new Date().toISOString())} <Dot /> Preview only
+            {article.createdAt ? dateFormatter(article.createdAt) : dateFormatter(new Date().toISOString())} <Dot /> Created by {article?.user?.username ?? user?.username}
           </div>
 
           <h1 className="text-2xl md:text-3xl text-center text-slate-900 font-semibold">
@@ -60,7 +64,7 @@ const PreviewPage = () => {
 
           <p className="text-slate-700 text-base font-normal" dangerouslySetInnerHTML={{ __html: article?.content || "" }} />
 
-          {relatedArticles.length > 0 && (
+          {(isRelatedArticlesLoading || relatedArticles.length > 0) && (
             <div className="mt-12 w-full">
               <h4 className="text-slate-900 text-xl font-bold">Other articles</h4>
               <div className="mt-6 mb-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
@@ -72,6 +76,7 @@ const PreviewPage = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

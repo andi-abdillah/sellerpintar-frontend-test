@@ -45,23 +45,24 @@ const ArticleDetailPage = () => {
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
 
-          <div className="mt-12 w-full">
-            <h4 className="text-slate-900 text-xl font-bold">Other articles</h4>
-            <div className="mt-6 mb-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
-              {isRelatedArticlesLoading
-                ? Array.from({ length: 3 }).map((_, idx) => (
-                  <ArticleCardSkeleton key={idx} />
-                ))
-                : relatedArticles.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
+          {(isRelatedArticlesLoading || relatedArticles.length > 0) && (
+            <div className="mt-12 w-full">
+              <h4 className="text-slate-900 text-xl font-bold">Other articles</h4>
+              <div className="mt-6 mb-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
+                {isRelatedArticlesLoading
+                  ? Array.from({ length: 3 }).map((_, idx) => (
+                    <ArticleCardSkeleton key={idx} />
+                  ))
+                  : relatedArticles.map((article) => (
+                    <ArticleCard key={article.id} article={article} />
+                  ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>
-
   )
 }
 
-export default ArticleDetailPage 
+export default ArticleDetailPage;

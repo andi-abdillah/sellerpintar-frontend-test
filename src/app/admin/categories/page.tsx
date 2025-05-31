@@ -97,7 +97,7 @@ const CategoriesPage = () => {
                     {category.name}
                   </TableCell>
                   <TableCell className="text-center text-sm text-slate-600 font-normal whitespace-normal">
-                    {dateFormatter(category.createdAt)}
+                    {dateFormatter(category.createdAt, true)}
                   </TableCell>
                   <TableCell className="text-center text-sm text-slate-600 font-normal whitespace-normal space-x-2">
                     <Button

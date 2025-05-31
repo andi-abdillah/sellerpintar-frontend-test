@@ -18,14 +18,12 @@ import { ArticleValidation, CreateArticleInput } from "@/schema/article.schema";
 import { Category } from "@/types/category.type";
 import Tiptap from "@/components/shared/tiptap";
 import { useFormPreview } from "@/provider/form-preview-context";
-import { toast } from "sonner";
-import { toastStyle } from "@/lib/toast";
 
 const CreateArticlePage = () => {
   const router = useRouter();
-  const { setData } = useFormPreview();
+  const { triggerPreview } = useFormPreview();
 
-  const { data: categoriesResponse } = useGetAllCategories({});
+  const { data: categoriesResponse } = useGetAllCategories({ perPage: "all" });
   const categories: Category[] = categoriesResponse?.categories || [];
 
   const form = useForm<CreateArticleInput>({
@@ -49,24 +47,14 @@ const CreateArticlePage = () => {
     createArticle(data);
   };
 
-  const handlePreview = () => {
-    const formData = form.getValues();
-
-    if (!formData.thumbnail || !formData.title || !formData.content || !formData.categoryId) {
-      toast("Please fill in all the required fields.", {
-        description: "Make sure all fields (Thumbnail, Title, Category and Content) are filled out before previewing.",
-        style: toastStyle.error,
-      });
-      return;
-    }
-
-    setData(formData);
-    router.push("/admin/articles/preview");
-  };
-
   const handleCancel = () => {
     form.reset();
     router.push("/admin/articles");
+  };
+
+  const handlePreview = () => {
+    const formData = form.getValues();
+    triggerPreview(formData);
   };
 
   return (

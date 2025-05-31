@@ -26,7 +26,6 @@ import { useGetAllCategories } from "@/features/category/useGetAllCategories";
 import CategorySearch from "@/components/shared/category-search";
 import useFilterArticlesByCategory from "@/features/article/useFilterArticlesByCategory";
 import { useFormPreview } from "@/provider/form-preview-context";
-import { useRouter } from "next/navigation";
 import TableSkeleton from "@/components/skeletons/table-skeleton";
 
 const tableHeaders = ["Thumbnails", "Title", "Category", "Created At", "Action"];
@@ -37,11 +36,10 @@ const ArticlesPage = () => {
 
   const { currentPage, setCurrentPage } = usePagination();
   const { searchValue, setSearchValue } = useSearch();
-  const { setData } = useFormPreview();
+  const { triggerPreview } = useFormPreview();
 
-  const router = useRouter();
+  const { data: categoryResponse, isLoading } = useGetAllCategories({ perPage: "all" });
 
-  const { data: categoryResponse, isLoading } = useGetAllCategories({});
   const categories: Category[] = categoryResponse?.categories || [];
 
   const perPage = 10;
@@ -64,16 +62,10 @@ const ArticlesPage = () => {
   };
 
   const handlePreview = (article: Article) => {
-    const previewData = {
-      id: article.id,
-      title: article.title,
-      content: article.content,
-      thumbnail: article.imageUrl,
-      categoryId: article.categoryId,
-    };
-
-    setData(previewData);
-    router.push("/admin/articles/preview");
+    triggerPreview({
+      ...article,
+      thumbnail: article.imageUrl
+    });
   };
 
   return (

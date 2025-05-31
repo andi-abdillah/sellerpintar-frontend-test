@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
@@ -20,18 +20,16 @@ import { ArticleValidation, UpdateArticleInput } from "@/schema/article.schema";
 import { Article } from "@/types/article.type";
 import { Category } from "@/types/category.type";
 import Tiptap from "@/components/shared/tiptap";
-import { toast } from "sonner";
-import { toastStyle } from "@/lib/toast";
 import { useFormPreview } from "@/provider/form-preview-context";
 
 const EditArticlePage = () => {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  const { data: articleResponse } = useGetArticleById({ id });
-  const { data: categoriesResponse } = useGetAllCategories({});
-  const { setData } = useFormPreview();
+  const { data: categoriesResponse } = useGetAllCategories({ perPage: "all" });
+  const { data: article } = useGetArticleById({ id }) as { data: Article };
+  const { triggerPreview } = useFormPreview();
+  const [formKey, setFormKey] = useState<number>(0);
 
-  const article = articleResponse as Article;
   const categories: Category[] = categoriesResponse?.categories || [];
 
   const form = useForm<UpdateArticleInput>({
@@ -43,17 +41,6 @@ const EditArticlePage = () => {
       categoryId: "",
     },
   });
-
-  useEffect(() => {
-    if (article) {
-      form.reset({
-        thumbnail: undefined,
-        title: article.title,
-        content: article.content,
-        categoryId: article.categoryId,
-      });
-    }
-  }, [article, form]);
 
   const { mutate: updateArticle } = useUpdateArticle({
     articleId: id,
@@ -69,44 +56,38 @@ const EditArticlePage = () => {
     });
   };
 
-  const handlePreview = () => {
-    const formData = form.getValues();
-
-    const hasNewThumbnail =
-      formData.thumbnail instanceof FileList && formData.thumbnail.length > 0;
-    const hasExistingThumbnail = !!article?.imageUrl;
-
-    if (!hasNewThumbnail && !hasExistingThumbnail) {
-      toast("Please fill in all the required fields.", {
-        description: "Thumbnail is required either as a new upload or existing image.",
-        style: toastStyle.error,
-      });
-      return;
-    }
-
-    if (!formData.title || !formData.content || !formData.categoryId) {
-      toast("Please fill in all the required fields.", {
-        description: "Make sure all fields (Title, Content, and Category) are filled out before previewing.",
-        style: toastStyle.error,
-      });
-      return;
-    }
-
-    const previewData = {
-      ...formData,
-      id,
-      thumbnail: hasNewThumbnail ? formData.thumbnail : article.imageUrl,
-    };
-
-    setData(previewData);
-    router.push("/admin/articles/preview");
-  };
-
-
   const handleCancel = () => {
     form.reset();
     router.push("/admin/articles");
   };
+
+  const handlePreview = () => {
+    const formData = form.getValues();
+
+    const previewData = {
+      id,
+      thumbnail: formData.thumbnail || article.imageUrl || "",
+      title: formData.title,
+      content: formData.content,
+      categoryId: formData.categoryId,
+      createdAt: article?.createdAt,
+      user: article?.user
+    };
+
+    triggerPreview(previewData);
+  };
+
+  useEffect(() => {
+    if (article) {
+      form.reset({
+        thumbnail: undefined,
+        title: article.title,
+        content: article.content,
+        categoryId: article.categoryId,
+      });
+      setFormKey((prevKey) => prevKey + 1);
+    }
+  }, [article, form]);
 
   return (
     <div className="bg-white rounded-lg border">
@@ -115,7 +96,7 @@ const EditArticlePage = () => {
           <BackButton /> Edit Article
         </div>
 
-        <Form {...form}>
+        <Form key={formKey} {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
             <ImageInputField
               control={form.control}
@@ -136,9 +117,9 @@ const EditArticlePage = () => {
               label="Category"
               name="categoryId"
               control={form.control}
-              options={categories.map((cat) => ({
-                value: cat.id,
-                label: cat.name,
+              options={categories.map((category) => ({
+                value: category.id,
+                label: category.name,
               }))}
             />
 

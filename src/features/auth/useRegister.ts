@@ -27,8 +27,6 @@ export const useRegister = ({ onSuccess, setError }: UseRegisterOptions) => {
     },
     onError: (error) => {
       if (error instanceof AxiosError && error.response?.status === 400) {
-        console.log(error.response)
-
         setError?.("username", {
           type: "manual",
           message: "Username is already taken",

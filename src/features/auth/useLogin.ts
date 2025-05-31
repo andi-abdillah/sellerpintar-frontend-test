@@ -31,8 +31,6 @@ export const useLogin = ({ onSuccess, setError }: UseLoginOptions) => {
     },
     onError: (error) => {
       if (error instanceof AxiosError && error.response?.status === 401) {
-        console.log(error.response)
-
         setError?.("username", {
           type: "manual",
           message: "Invalid username or password",

@@ -15,10 +15,9 @@ import ArticleCardSkeleton from "@/components/skeletons/article-card-skeleton";
 
 const Home = () => {
   const { currentPage, setCurrentPage } = usePagination();
-
   const { searchValue, setSearchValue } = useSearch();
 
-  const { data: categoryResponse } = useGetAllCategories({});
+  const { data: categoryResponse } = useGetAllCategories({ perPage: "all" });
   const categories: Category[] = categoryResponse?.categories || [];
 
   const perPage = 9;
@@ -68,21 +67,24 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="px-5 pt-8 pb-24 md:px-24">
+      <div className="px-5 pt-8 pb-16 md:px-24">
         <div className="text-slate-600">
           Showing: {articles?.length ?? 0} of {total ?? 0} articles
         </div>
 
-        <div className="mt-6 mb-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
-          {articlesLoading
-            ? Array.from({ length: 6 }).map((_, idx) => (
+        <div className="mt-6 mb-12 min-h-32 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-14 place-items-center">
+          {articlesLoading ? (
+            Array.from({ length: 6 }).map((_, idx) => (
               <ArticleCardSkeleton key={idx} />
             ))
-            : articles.map((article: Article) => (
+          ) : total === 0 ? (
+            <p className="col-span-full text-center text-gray-500 text-lg">No articles found.</p>
+          ) : (
+            articles.map((article: Article) => (
               <ArticleCard key={article.id} article={article} />
-            ))}
+            ))
+          )}
         </div>
-
         <Paginator
           currentPage={currentPage}
           totalPages={Math.ceil(total / limit)}
