@@ -1,11 +1,23 @@
 
 # SellerPintar Frontend Test
 
-This is a Next.js project for the frontend test of SellerPintar.
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started Locally
+## Tech Stack
 
-To run the application locally, follow these steps:
+- **Next.js**: Utilizing the app router with SSR and CSR.
+- **TypeScript**: Strongly typed JavaScript.
+- **React Query**: For fetching, caching, and synchronizing server state in React applications.
+- **Tailwind CSS**: For utility-first CSS styling with custom configurations.
+- **Shadcn/UI**: Preferred UI components library.
+- **Axios**: For making HTTP requests to APIs.
+- **Lucide**: For icons.
+- **Zod + React Hook Form**: For form validation.
+- **Tiptap React**: WYSIWYG (What You See Is What You Get) editor.
+
+## Getting Started
+
+To get the project up and running locally, follow the steps below:
 
 ### 1. Clone the Repository
 
@@ -15,60 +27,42 @@ First, clone the repository to your local machine:
 git clone https://github.com/andi-abdillah/sellerpintar-frontend-test.git
 ```
 
-### 2. Create the `.env` File
+### 2. Setup Environment Variables
 
-After cloning the repository, you need to create a `.env` file based on the `.env.example` template.
+Create a `.env` file based on the provided `.env.example`:
 
-1. Copy the `.env.example` file:
-
-   ```bash
-   cp .env.example .env
-   ```
-
-2. Open the `.env` file and replace the values for `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_JWT_SECRET` with your actual values:
-
-   ```env
-   NEXT_PUBLIC_API_URL=<Your_API_URL>
-   NEXT_PUBLIC_JWT_SECRET=<Your_JWT_SECRET>
-   ```
+```bash
+cp .env.example .env
+```
 
 ### 3. Install Dependencies
 
-Navigate to the project directory and install the dependencies:
+Run the following command to install the required dependencies:
 
 ```bash
-cd sellerpintar-frontend-test
 npm install
-# or using yarn
-# yarn install
-# or using pnpm
-# pnpm install
+# or
+yarn install
+# or
+pnpm install
 ```
 
 ### 4. Run the Development Server
 
-After the dependencies are installed, start the development server by running the following command:
+Once the dependencies are installed, you can start the development server:
 
 ```bash
 npm run dev
-# or using yarn
-# yarn dev
-# or using pnpm
-# pnpm dev
+# or
+yarn dev
+# or
+pnpm dev
 ```
 
-The app will be available at [http://localhost:3000](http://localhost:3000).
+This will start the application at [http://localhost:3000](http://localhost:3000).
 
-### 5. Start Editing
+### 5. Access the Deployed Application
 
-You can now start editing the application. For example, modify the file `app/page.tsx` to update the homepage. The page will auto-reload as you make changes.
+If you want to check the deployed version of the app, it is available at:
 
----
-
-## Deployment
-
-If you'd like to test the application without running it locally, the app is already deployed at [https://sellerpintar-frontend-test.vercel.app/](https://sellerpintar-frontend-test.vercel.app/).
-
-You can visit this URL to see the application live.
-
----
+[https://sellerpintar-frontend-test.vercel.app/](https://sellerpintar-frontend-test.vercel.app/)
