@@ -53,8 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       const userData = payload as User;
       setUser(userData);
-    } catch (error) {
-      console.error("Invalid JWT:", error);
+    } catch {
       toast("Invalid JWT", {
         description: "Unable to decode user information. Please log in again.",
         style: toastStyle.error,
@@ -77,8 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         sameSite: "strict",
         expires: 7,
       });
-    } catch (error) {
-      console.error("Failed to fetch profile", error);
+    } catch  {
       toast("Unexpected error", {
         description: "Could not retrieve user data. Please try again later.",
         style: toastStyle.error,

@@ -30,8 +30,7 @@ export async function middleware(req: NextRequest) {
         new TextEncoder().encode(secretKey)
       )
       role = (payload as { role: string }).role
-    } catch (err) {
-      console.error("JWT decode failed", err)
+    } catch {
       return NextResponse.redirect(new URL("/login", req.url))
     }
   }

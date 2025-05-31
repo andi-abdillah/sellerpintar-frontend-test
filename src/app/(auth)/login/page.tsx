@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -16,8 +15,6 @@ import PasswordField from "@/components/form/password-field";
 import Icon from "@/components/ui/icon";
 
 const LoginPage = () => {
-  const router = useRouter();
-
   const form = useForm<LoginFormInput>({
     resolver: zodResolver(UserValidation.LOGIN),
     defaultValues: {
@@ -29,7 +26,6 @@ const LoginPage = () => {
   const { mutate } = useLogin({
     onSuccess: () => {
       form.reset();
-      router.push("/user/home");
     },
     setError: form.setError
   });
