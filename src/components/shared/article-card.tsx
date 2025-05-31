@@ -36,6 +36,10 @@ const ArticleCard = ({ article }: Props) => {
           className="text-sm text-slate-600 overflow-hidden"
           dangerouslySetInnerHTML={{ __html: limitWords(article.content) }}
         />
+
+        <Link href={`/user/home?page=1&category=${article.category.name}`} className="w-max text-sm text-blue-900 rounded-full bg-blue-100 py-1 px-3 capitalize">
+          {article.category.name}
+        </Link>
       </div>
     </div>
   );
