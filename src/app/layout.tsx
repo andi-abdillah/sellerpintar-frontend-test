@@ -3,6 +3,7 @@ import "./globals.css";
 import { ReactQueryProvider } from "@/provider/react-query-provider";
 import { AuthProvider } from "@/provider/auth-context";
 import { Toaster } from "@/components/ui/sonner";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +32,11 @@ export default function RootLayout({
         className="font-archivo antialiased"
       >
         <AuthProvider>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            <Suspense>
+              {children}
+            </Suspense>
+          </ReactQueryProvider>
         </AuthProvider>
         <Toaster />
       </body>
