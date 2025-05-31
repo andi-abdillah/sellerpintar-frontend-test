@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# SellerPintar Frontend Test
 
-First, run the development server:
+This is a Next.js project for the frontend test of SellerPintar.
+
+## Getting Started Locally
+
+To run the application locally, follow these steps:
+
+### 1. Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/andi-abdillah/sellerpintar-frontend-test.git
+```
+
+### 2. Create the `.env` File
+
+After cloning the repository, you need to create a `.env` file based on the `.env.example` template.
+
+1. Copy the `.env.example` file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Open the `.env` file and replace the values for `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_JWT_SECRET` with your actual values:
+
+   ```env
+   NEXT_PUBLIC_API_URL=<Your_API_URL>
+   NEXT_PUBLIC_JWT_SECRET=<Your_JWT_SECRET>
+   ```
+
+### 3. Install Dependencies
+
+Navigate to the project directory and install the dependencies:
+
+```bash
+cd sellerpintar-frontend-test
+npm install
+# or using yarn
+# yarn install
+# or using pnpm
+# pnpm install
+```
+
+### 4. Run the Development Server
+
+After the dependencies are installed, start the development server by running the following command:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# or using yarn
+# yarn dev
+# or using pnpm
+# pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 5. Start Editing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You can now start editing the application. For example, modify the file `app/page.tsx` to update the homepage. The page will auto-reload as you make changes.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If you'd like to test the application without running it locally, the app is already deployed at [https://sellerpintar-frontend-test.vercel.app/](https://sellerpintar-frontend-test.vercel.app/).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+You can visit this URL to see the application live.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
